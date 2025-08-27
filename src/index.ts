@@ -1,0 +1,4 @@
+export type {EmojiPickerOptions} from './components/EmojiPickerInput'
+export type {EmojiPluginOptions} from './plugin'
+export {EmojiPickerInput, emojiPlugin} from './plugin'
+export {emojiPlugin as default} from './plugin'
