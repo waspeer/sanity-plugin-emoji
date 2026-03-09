@@ -32,13 +32,13 @@ export default defineConfig({
   plugins: [
     // Basic usage
     emojiPlugin(),
-    
+
     // Or with custom configuration
     emojiPlugin({
       set: 'apple',
       perLine: 8,
       categories: ['people', 'nature', 'foods', 'activity'],
-    })
+    }),
   ],
 })
 ```
@@ -133,35 +133,35 @@ export default defineConfig({
     emojiPlugin({
       // Emoji set to use ('native' for best performance)
       set: 'apple', // 'native' | 'apple' | 'facebook' | 'google' | 'twitter'
-      
+
       // Layout options
       perLine: 8, // Number of emojis per line (default: 9)
       emojiSize: 20, // Size of emojis in pixels (default: 24)
       emojiButtonSize: 32, // Size of emoji buttons in pixels (default: 36)
-      
+
       // UI positioning
       previewPosition: 'bottom', // 'none' | 'top' | 'bottom' (default: 'none')
       skinTonePosition: 'preview', // 'preview' | 'search' | 'none' (default: 'search')
       searchPosition: 'sticky', // 'sticky' | 'static' | 'none' (default: 'sticky')
       navPosition: 'bottom', // 'top' | 'bottom' | 'none' (default: 'top')
-      
+
       // Category filtering (order is respected)
       categories: ['people', 'nature', 'foods', 'activity'],
-      
+
       // Feature toggles
       enableSkinTones: true, // Enable skin tone variations (default: true)
       enableSearch: true, // Enable search functionality (default: true)
       maxFrequentRows: 2, // Rows of frequently used emojis (default: 4, 0 to disable)
-      
+
       // Localization
       locale: 'en', // Language code (default: 'en')
       searchPlaceholder: 'Find an emoji...', // Search input placeholder
-      
+
       // Advanced options
       autoFocus: true, // Auto-focus search on picker open (default: false)
       noCountryFlags: false, // Hide country flag emojis (default: false)
       exceptEmojis: ['1f4a9'], // Exclude specific emoji IDs
-    })
+    }),
   ],
 })
 ```
@@ -190,7 +190,6 @@ pnpm run build
 # Watch for changes
 pnpm run watch
 ```
-
 
 ## Dependencies
 
