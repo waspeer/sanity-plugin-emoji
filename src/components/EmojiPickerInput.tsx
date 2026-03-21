@@ -8,9 +8,6 @@ import {set, unset} from 'sanity'
 
 import type {EmojiData, EmojiMartProps} from '../types/emoji-mart-types'
 
-// Initialize emoji-mart with the data
-init({data})
-
 // Pick only the relevant options we want to expose, excluding theme and other props we don't want to expose
 export type EmojiPickerOptions = Pick<
   EmojiMartProps,
@@ -62,8 +59,16 @@ export const EmojiPickerInput: React.FC<EmojiPickerInputProps> = ({
   const [isOpen, setIsOpen] = useState(false)
   const [emojiName, setEmojiName] = useState<string | null>(null)
 
-  // Fetch emoji name when value changes
+  // Initialize emoji-mart only in browser context (avoids crashes during schema extract/typegen)
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      init({data})
+    }
+  }, [])
+
+  // Fetch emoji name when value changes (guarded for non-browser contexts)
+  useEffect(() => {
+    if (typeof window === 'undefined') return
     if (value) {
       getEmojiDataFromNative(value).then(
         (emojiData) => {
