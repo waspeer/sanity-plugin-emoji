@@ -146,7 +146,7 @@ export const EmojiPickerInput: React.FC<EmojiPickerInputProps> = ({
 
         {value && (
           <Flex flex={1} gap={2} align="center">
-            <Text size={4}>{value}</Text>
+            <Text size={4} data-testid="emoji-value">{value}</Text>
             {emojiName && (
               <Text muted size={1}>
                 - {emojiName}
@@ -155,7 +155,7 @@ export const EmojiPickerInput: React.FC<EmojiPickerInputProps> = ({
           </Flex>
         )}
 
-        {value && <Button mode="ghost" onClick={handleClear} icon={TrashIcon} />}
+        {value && <Button aria-label="Clear emoji" mode="ghost" onClick={handleClear} icon={TrashIcon} />}
       </Flex>
     </Stack>
   )
