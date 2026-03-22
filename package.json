@@ -36,10 +36,15 @@
   ],
   "scripts": {
     "build": "plugin-kit verify-package --silent && pkg-utils build --strict --check --clean",
+    "dev": "concurrently -n watch,studio \"pkg-utils watch --strict\" \"pnpm --filter sanity-plugin-emoji-dev-studio dev\"",
+    "dev:studio": "pnpm --filter sanity-plugin-emoji-dev-studio dev",
     "format": "prettier --write --cache --ignore-unknown .",
     "link-watch": "plugin-kit link-watch",
     "lint": "ESLINT_USE_FLAT_CONFIG=true eslint .",
     "prepublishOnly": "npm run build",
+    "test:e2e": "playwright test",
+    "test:e2e:setup": "tsx playwright/auth-setup.mts",
+    "test:e2e:ui": "playwright test --ui",
     "watch": "pkg-utils watch --strict"
   },
   "dependencies": {
@@ -51,6 +56,9 @@
     "emoji-mart": "^5.6.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "concurrently": "^9.1.2",
+    "@vitejs/plugin-react": "^4.5.2",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^8.57.0",
     "@sanity/pkg-utils": "^8.1.0",
@@ -70,7 +78,9 @@
     "react-dom": "^19.1.1",
     "sanity": "^4.6.0",
     "styled-components": "^6.1.19",
-    "typescript": "^5.9.2"
+    "tsx": "^4.19.3",
+    "typescript": "^5.9.2",
+    "vite": "^6.3.5"
   },
   "peerDependencies": {
     "react": "^18 || ^19",

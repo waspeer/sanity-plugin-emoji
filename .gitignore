@@ -58,3 +58,11 @@ yalc.lock
 
 # Compiled plugin
 dist
+
+# Playwright
+playwright-report/
+playwright/.auth
+test-results/
+
+# Dev studio env
+dev/.env
