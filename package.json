@@ -17,77 +17,81 @@
   "license": "MIT",
   "author": "Wannes Salome <mail@wannessalome.nl>",
   "sideEffects": false,
-  "type": "commonjs",
+  "type": "module",
   "exports": {
     ".": {
       "source": "./src/index.ts",
-      "import": "./dist/index.mjs",
-      "default": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./package.json": "./package.json"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.mts",
   "files": [
     "dist",
     "sanity.json",
     "src",
-    "v2-incompatible.js"
+    "v2-incompatible.cjs"
   ],
   "scripts": {
-    "build": "plugin-kit verify-package --silent && pkg-utils build --strict --check --clean",
-    "dev": "concurrently -n watch,studio \"pkg-utils watch --strict\" \"pnpm --filter sanity-plugin-emoji-dev-studio dev\"",
+    "build": "tsdown",
+    "dev": "concurrently -n watch,studio \"tsdown --watch\" \"pnpm --filter sanity-plugin-emoji-dev-studio dev\"",
     "dev:studio": "pnpm --filter sanity-plugin-emoji-dev-studio dev",
     "format": "prettier --write --cache --ignore-unknown .",
-    "link-watch": "plugin-kit link-watch",
-    "lint": "ESLINT_USE_FLAT_CONFIG=true eslint .",
-    "prepublishOnly": "npm run build",
+    "lint": "eslint .",
+    "prepublishOnly": "pnpm run build",
     "test:e2e": "playwright test",
     "test:e2e:setup": "tsx playwright/auth-setup.mts",
     "test:e2e:ui": "playwright test --ui",
-    "watch": "pkg-utils watch --strict"
+    "watch": "tsdown --watch"
   },
   "dependencies": {
     "@emoji-mart/data": "^1.1.1",
     "@emoji-mart/react": "^1.1.1",
-    "@sanity/icons": "^3.7.4",
     "@sanity/incompatible-plugin": "^1.0.5",
-    "@sanity/ui": "^3.0.7",
     "emoji-mart": "^5.6.0"
   },
   "devDependencies": {
+    "@eslint-react/eslint-plugin": "^3.0.0",
+    "@eslint/js": "^10.0.0",
     "@playwright/test": "^1.52.0",
+    "@types/react": "^19.2.14",
+    "@vitejs/plugin-react": "^6.0.1",
     "concurrently": "^9.1.2",
-    "@vitejs/plugin-react": "^4.5.2",
-    "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^8.57.0",
-    "@sanity/pkg-utils": "^8.1.0",
-    "@sanity/plugin-kit": "^4.0.20",
-    "@types/react": "^19.1.11",
-    "@typescript-eslint/eslint-plugin": "^8.41.0",
-    "@typescript-eslint/parser": "^8.41.0",
-    "eslint": "^8.57.1",
+    "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-config-sanity": "^7.1.4",
-    "eslint-plugin-prettier": "^5.5.4",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "prettier": "^3.6.2",
-    "prettier-plugin-packagejson": "^2.5.19",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "sanity": "^4.6.0",
-    "styled-components": "^6.1.19",
-    "tsx": "^4.19.3",
-    "typescript": "^5.9.2",
-    "vite": "^6.3.5"
+    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "prettier": "^3.8.1",
+    "prettier-plugin-packagejson": "^3.0.2",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "sanity": "^5.17.1",
+    "styled-components": "^6.3.12",
+    "tsdown": "^0.21.4",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.1",
+    "vite": "^8.0.1"
   },
   "peerDependencies": {
+    "@sanity/icons": "^3",
+    "@sanity/ui": "^3",
     "react": "^18 || ^19",
-    "sanity": "^3 || ^4"
+    "sanity": "^3 || ^4 || ^5"
   },
   "engines": {
     "node": ">=18"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
   },
   "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad"
 }
