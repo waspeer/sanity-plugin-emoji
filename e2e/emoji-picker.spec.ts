@@ -11,8 +11,8 @@ async function selectEmoji(field: Locator, query: string, emojiButton: string) {
   await field.getByRole('button', {name: 'Select emoji'}).click()
   await field.page().getByRole('searchbox').fill(query)
   // Wait for emoji-mart to finish filtering before clicking
-  await expect(field.page().getByRole('button', {name: emojiButton})).toBeVisible()
-  await field.page().getByRole('button', {name: emojiButton}).click()
+  await expect(field.page().getByRole('button', {name: emojiButton, exact: true})).toBeVisible()
+  await field.page().getByRole('button', {name: emojiButton, exact: true}).click()
 }
 
 test.describe('emoji field', () => {
@@ -57,6 +57,13 @@ test.describe('emoji field', () => {
     await expect(field.getByRole('button', {name: 'Clear emoji'})).toBeVisible()
   })
 
+  test('shows emoji name label after selecting', async ({page}) => {
+    await selectEmoji(field, 'grinning', '😀')
+
+    // The emoji name label should appear alongside the emoji
+    await expect(page.getByText('- Grinning Face')).toBeVisible()
+  })
+
   test('clears emoji when clicking the trash button', async () => {
     await selectEmoji(field, 'grinning', '😀')
 
@@ -68,5 +75,26 @@ test.describe('emoji field', () => {
     // Value display and clear button should be gone
     await expect(field.getByTestId('emoji-value')).not.toBeVisible()
     await expect(field.getByRole('button', {name: 'Clear emoji'})).not.toBeVisible()
+  })
+
+  test('hides emoji name after clearing', async ({page}) => {
+    await selectEmoji(field, 'grinning', '😀')
+    await expect(page.getByText('- Grinning Face')).toBeVisible()
+
+    await field.getByRole('button', {name: 'Clear emoji'}).click()
+
+    // Name should no longer be visible even though emojiName state stays stale
+    await expect(page.getByText('- Grinning Face')).not.toBeVisible()
+  })
+
+  test('shows correct name after switching emojis', async ({page}) => {
+    await selectEmoji(field, 'grinning', '😀')
+    await expect(page.getByText('- Grinning Face')).toBeVisible()
+
+    // Select a different emoji (use exact name match to avoid '❤️‍🔥' Heart on Fire ambiguity)
+    await selectEmoji(field, 'Fire', '🔥')
+    await expect(field.getByTestId('emoji-value')).toHaveText('🔥')
+    await expect(page.getByText('- Fire')).toBeVisible()
+    await expect(page.getByText('- Grinning Face')).not.toBeVisible()
   })
 })
