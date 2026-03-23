@@ -66,22 +66,20 @@ export const EmojiPickerInput: React.FC<EmojiPickerInputProps> = ({
     }
   }, [])
 
-  // Fetch emoji name when value changes (guarded for non-browser contexts)
+  // Fetch emoji name when value changes (guarded for non-browser contexts).
+  // No need to clear emojiName when value is absent — the JSX already guards
+  // the name display with `{value && ...}`.
   useEffect(() => {
-    if (typeof window === 'undefined') return
-    if (value) {
-      getEmojiDataFromNative(value).then(
-        (emojiData) => {
-          setEmojiName(emojiData.name)
-        },
-        (error) => {
-          console.error('Failed to get emoji name:', error)
-          setEmojiName(null)
-        },
-      )
-    } else {
-      setEmojiName(null)
-    }
+    if (typeof window === 'undefined' || !value) return
+    getEmojiDataFromNative(value).then(
+      (emojiData) => {
+        setEmojiName(emojiData.name)
+      },
+      (error) => {
+        console.error('Failed to get emoji name:', error)
+        setEmojiName(null)
+      },
+    )
   }, [value])
 
   const handleEmojiSelect = useCallback(
@@ -97,8 +95,8 @@ export const EmojiPickerInput: React.FC<EmojiPickerInputProps> = ({
   }, [onChange])
 
   const togglePicker = useCallback(() => {
-    setIsOpen(!isOpen)
-  }, [isOpen])
+    setIsOpen((prev) => !prev)
+  }, [])
 
   const [pickerContainer, setPickerContainer] = useState<HTMLDivElement | null>(null)
 
@@ -146,7 +144,9 @@ export const EmojiPickerInput: React.FC<EmojiPickerInputProps> = ({
 
         {value && (
           <Flex flex={1} gap={2} align="center">
-            <Text size={4} data-testid="emoji-value">{value}</Text>
+            <Text size={4} data-testid="emoji-value">
+              {value}
+            </Text>
             {emojiName && (
               <Text muted size={1}>
                 - {emojiName}
@@ -155,7 +155,9 @@ export const EmojiPickerInput: React.FC<EmojiPickerInputProps> = ({
           </Flex>
         )}
 
-        {value && <Button aria-label="Clear emoji" mode="ghost" onClick={handleClear} icon={TrashIcon} />}
+        {value && (
+          <Button aria-label="Clear emoji" mode="ghost" onClick={handleClear} icon={TrashIcon} />
+        )}
       </Flex>
     </Stack>
   )
