@@ -1,5 +1,12 @@
 # Changelog
 
+# [1.1.0](https://github.com/waspeer/sanity-plugin-emoji/compare/1.0.1-beta.0...1.1.0) (2026-03-25)
+
+
+### Features
+
+* add TypeScript type augmentation for emoji schema type ([b1cc094](https://github.com/waspeer/sanity-plugin-emoji/commit/b1cc094d9504664ccd886eaec5beda2fba9ba52b))
+
 ## 1.0.1-beta.0 (2026-03-23)
 
 
